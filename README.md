@@ -1,25 +1,25 @@
-TPI Programación IV
+#TPI Programación IV
 
-Descripción
+##Descripción
 
 Trabajo práctico integrador de la materia Programación IV.
 El proyecto consiste en el desarrollo de una API utilizando ASP.NET Core, resolviendo ejercicios de lógica y LINQ.
 
-Integrantes
+##Integrantes
 
-Santiago Guebara
-Luigi Marconi Favini
-Martín Plaza
+- Santiago Guebara
+- Luigi Marconi Favini
+- Martín Plaza
 
-Tecnologías utilizadas
+##Tecnologías utilizadas
 
-C#
-ASP.NET Core Web API
-LINQ
+- C#
+- ASP.NET Core Web API
+- LINQ
 
-Cómo ejecutar el proyecto
+##Cómo ejecutar el proyecto
 
-Clonar el repositorio
-Abrir el proyecto en Visual Studio
-Ejecutar la API
-Probar los endpoints con Postman o Swagger
+- Clonar el repositorio
+- Abrir el proyecto en Visual Studio
+- Ejecutar la API
+- Probar los endpoints con Postman o Swagger
