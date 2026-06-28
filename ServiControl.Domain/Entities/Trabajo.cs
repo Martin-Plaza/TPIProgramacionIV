@@ -9,7 +9,7 @@ public class Trabajo
     public int UsuarioId { get; private set; }
     public CategoriaServicio CategoriaServicio { get; private set; }
     public string Descripcion { get; private set; }
-    public DateTime Fecha { get; private set; }
+    public DateOnly Fecha { get; private set; }
     public string Direccion { get; private set; }
     public string? Observaciones { get; private set; }
     public EstadoTrabajo Estado { get; private set; }
@@ -19,7 +19,7 @@ public class Trabajo
         int usuarioId,
         CategoriaServicio categoriaServicio,
         string descripcion,
-        DateTime fecha,
+        DateOnly fecha,
         string direccion,
         string? observaciones = null)
     {
@@ -56,7 +56,7 @@ public class Trabajo
     public void ActualizarDatos(
         CategoriaServicio categoriaServicio,
         string descripcion,
-        DateTime fecha,
+        DateOnly fecha,
         string direccion,
         string? observaciones)
     {

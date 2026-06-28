@@ -18,6 +18,7 @@ public class BCryptPasswordHasher : IPasswordHasher
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
+    //primero se fija si estan vacios, despues compara el password con el password hasheado (hashea el primero para comparar)
     public bool Verify(string password, string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordHash))

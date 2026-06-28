@@ -1,6 +1,0 @@
-@AgentsTIF_HostAddress = http://localhost:5170
-
-GET {{AgentsTIF_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

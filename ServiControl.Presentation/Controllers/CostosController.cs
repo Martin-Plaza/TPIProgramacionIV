@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiControl.Application.Authorization;
 using ServiControl.Application.DTOs;
 using ServiControl.Application.Interfaces;
 
@@ -9,7 +10,7 @@ namespace ServiControl.Presentation.Controllers;
 // Capa: Presentation
 // Responsabilidad: Expone operaciones de costos y delega validaciones a Application/Domain.
 [ApiController]
-[Authorize]
+[Authorize(Roles = Roles.Todos)]
 [Route("api/costos")]
 public class CostosController : ControllerBase
 {
@@ -56,14 +57,18 @@ public class CostosController : ControllerBase
         }
     }
 
+    // El costo final representa informacion economica cerrada: Asistente no tiene acceso.
+    [Authorize(Roles = Roles.AdminTecnico)]
     [HttpPut("{id:int}/final")]
     public async Task<ActionResult<CostoResponse>> RegistrarCostoFinal(
         int id,
+        //ingresamos solo por body el costo final
         [FromBody] decimal costoFinal,
         CancellationToken cancellationToken)
     {
         try
         {
+            //creara el DTO y se lo pasa al servicio de costo
             var costo = await _costoService.RegistrarCostoFinalAsync(
                 new RegisterCostoFinalRequest(id, costoFinal),
                 cancellationToken);

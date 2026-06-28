@@ -1,22 +1,30 @@
+using System.ComponentModel.DataAnnotations;
 using ServiControl.Domain.Enums;
 
 namespace ServiControl.Application.DTOs;
 
 public record RegisterUserRequestDto(
-    string Nombre,
-    string Email,
-    string Password,
-    RolUsuario Rol);
+    [param: Required] string Nombre,
+    [param: Required, EmailAddress] string Email,
+    [param: Required] string Password,
+    RolUsuario Rol,
+    int? IdUsuarioResponsable = null);
+
+public record CreateAdminRequestDto(
+    [param: Required] string Nombre,
+    [param: Required, EmailAddress] string Email,
+    [param: Required] string Password);
 
 public record LoginRequestDto(
-    string Email,
-    string Password);
+    [param: Required, EmailAddress] string Email,
+    [param: Required] string Password);
 
 public record UserResponseDto(
     int Id,
     string Nombre,
     string Email,
-    RolUsuario Rol);
+    RolUsuario Rol,
+    int? IdUsuarioResponsable);
 
 public record LoginResponseDto(
     string Token,

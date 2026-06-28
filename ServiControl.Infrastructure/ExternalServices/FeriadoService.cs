@@ -27,11 +27,13 @@ public class FeriadoService : IFeriadoService
 
         try
         {
+            //esta es la inyeccion de httpClientFactory, en program.cs
             var feriados = await _httpClient.GetFromJsonAsync<List<FeriadoApiResponse>>(
                 $"feriados/{anio}",
                 cancellationToken);
-
+            //si devolvio algo lo mapea en el DTO
             return feriados?
+                //FeriadoDTO es lo que vamos a devolver en el endpoint
                 .Select(feriado => new FeriadoDto(
                     feriado.Fecha,
                     feriado.Tipo,
@@ -43,7 +45,7 @@ public class FeriadoService : IFeriadoService
             throw new InvalidOperationException("No se pudieron obtener los feriados desde el servicio externo.", ex);
         }
     }
-
+    //feriadoApiResponse se usa en la var feriados
     private sealed record FeriadoApiResponse(
         string Fecha,
         string Tipo,

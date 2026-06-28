@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiControl.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using ServiControl.Infrastructure.Persistence.Context;
 namespace ServiControl.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260625140115_AddUsuarioResponsable")]
+    partial class AddUsuarioResponsable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,12 +51,7 @@ namespace ServiControl.Infrastructure.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Clientes", (string)null);
                 });
@@ -150,8 +148,8 @@ namespace ServiControl.Infrastructure.Persistence.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("Fecha")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Observaciones")
                         .HasMaxLength(500)
@@ -206,15 +204,6 @@ namespace ServiControl.Infrastructure.Persistence.Migrations
                     b.HasIndex("IdUsuarioResponsable");
 
                     b.ToTable("Usuarios", (string)null);
-                });
-
-            modelBuilder.Entity("ServiControl.Domain.Entities.Cliente", b =>
-                {
-                    b.HasOne("ServiControl.Domain.Entities.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ServiControl.Domain.Entities.Costo", b =>

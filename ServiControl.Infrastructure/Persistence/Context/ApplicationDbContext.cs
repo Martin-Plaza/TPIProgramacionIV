@@ -10,21 +10,27 @@ namespace ServiControl.Infrastructure.Persistence.Context;
 // Nota: Se usa Fluent API para mantener Domain libre de atributos de persistencia.
 public class ApplicationDbContext : DbContext
 {
+    //options viene de program.cs builder.Services.AddDbContext 
+    //EF crea un objeto dbcontextOptions, conection String, proveedor SQL Server, configuraciones
+    //luego lo inyecta en base
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
+    //tablas de la DB
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Cliente> Clientes => Set<Cliente>();
     public DbSet<Trabajo> Trabajos => Set<Trabajo>();
     public DbSet<Costo> Costos => Set<Costo>();
     public DbSet<Metrica> Metricas => Set<Metrica>();
 
+    //esto se ejecuta una sola vez cuando construye el modelo
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        //aca declaramos funciones para configurar cada tabla
         ConfigureUsuarios(modelBuilder);
         ConfigureClientes(modelBuilder);
         ConfigureTrabajos(modelBuilder);
@@ -32,6 +38,8 @@ public class ApplicationDbContext : DbContext
         ConfigureMetricas(modelBuilder);
     }
 
+    //luego configuramos cada tabla y le ponemos las restricciones que queremos y que son parte de la DB
+    //esto es parte de CODE FIRST
     private static void ConfigureUsuarios(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Usuario>(entity =>
@@ -58,6 +66,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(usuario => usuario.Rol)
                 .HasConversion<int>()
                 .IsRequired();
+
+            entity.HasOne(usuario => usuario.UsuarioResponsable)
+                .WithMany()
+                .HasForeignKey(usuario => usuario.IdUsuarioResponsable)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 
@@ -68,6 +81,9 @@ public class ApplicationDbContext : DbContext
             entity.ToTable("Clientes");
 
             entity.HasKey(cliente => cliente.Id);
+
+            entity.Property(cliente => cliente.UsuarioId)
+                .IsRequired();
 
             entity.Property(cliente => cliente.Nombre)
                 .HasMaxLength(100)
@@ -82,6 +98,13 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(cliente => cliente.Observaciones)
                 .HasMaxLength(500);
+
+            entity.HasIndex(cliente => cliente.UsuarioId);
+
+            entity.HasOne<Usuario>()
+                .WithMany()
+                .HasForeignKey(cliente => cliente.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 
@@ -102,6 +125,7 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
 
             entity.Property(trabajo => trabajo.Fecha)
+                .HasColumnType("date")
                 .IsRequired();
 
             entity.Property(trabajo => trabajo.Direccion)

@@ -8,6 +8,10 @@ public interface IAuthService
         RegisterUserRequestDto request,
         CancellationToken cancellationToken = default);
 
+    Task<UserResponseDto> CreateAdminAsync(
+        CreateAdminRequestDto request,
+        CancellationToken cancellationToken = default);
+
     Task<LoginResponseDto> LoginAsync(
         LoginRequestDto request,
         CancellationToken cancellationToken = default);

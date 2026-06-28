@@ -1,9 +1,8 @@
 namespace ServiControl.Application.DTOs;
 
 public record GenerateMetricaRequest(
-    int UsuarioId,
-    DateTime PeriodoInicio,
-    DateTime PeriodoFin);
+    DateOnly PeriodoInicio,
+    DateOnly PeriodoFin);
 
 public record MetricaResponse(
     int Id,

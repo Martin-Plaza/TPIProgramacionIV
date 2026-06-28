@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiControl.Application.Authorization;
 using ServiControl.Application.DTOs;
 using ServiControl.Application.Interfaces;
 
@@ -18,6 +20,8 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    // Solo un administrador autenticado puede crear usuarios y asignarles un rol.
+    [Authorize(Roles = Roles.Admin)]
     [HttpPost("register")]
     public async Task<ActionResult<UserResponseDto>> Register(
         RegisterUserRequestDto request,
@@ -26,18 +30,23 @@ public class AuthController : ControllerBase
         try
         {
             var user = await _authService.RegisterAsync(request, cancellationToken);
+            //string.Empty reemplaza a la url del recurso creado (que te pide el metodo Created)
             return Created(string.Empty, user);
         }
         catch (ArgumentException ex)
         {
+            //bad request es por un un mail invalido por ejemplo
             return BadRequest(ex.Message);
         }
         catch (InvalidOperationException ex)
         {
+            //es cuando esta bien la request pero hay conflicto en la logica del sistema (por ejemplo un mail existente)
             return Conflict(ex.Message);
         }
     }
 
+    //permite usar el endpoint aunque el usuario no tenga token
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponseDto>> Login(
         LoginRequestDto request,
@@ -50,6 +59,7 @@ public class AuthController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
+            //sin autorizacion el usuario
             return Unauthorized(ex.Message);
         }
     }

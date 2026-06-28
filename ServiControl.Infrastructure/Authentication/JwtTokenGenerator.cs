@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ServiControl.Application.Authorization;
 using ServiControl.Application.Interfaces;
 using ServiControl.Domain.Entities;
 
@@ -54,7 +55,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         var claims = new[]
         {
-            new Claim("IdUsuario", usuario.Id.ToString()),
+            new Claim(AuthClaimTypes.UsuarioId, usuario.Id.ToString()),
             new Claim(ClaimTypes.Email, usuario.Email),
             new Claim(ClaimTypes.Role, usuario.Rol.ToString())
         };

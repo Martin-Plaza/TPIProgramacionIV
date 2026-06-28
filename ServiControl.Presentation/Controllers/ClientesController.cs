@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiControl.Application.Authorization;
 using ServiControl.Application.DTOs;
 using ServiControl.Application.Interfaces;
 
@@ -9,7 +10,7 @@ namespace ServiControl.Presentation.Controllers;
 // Capa: Presentation
 // Responsabilidad: Recibe requests HTTP y delega el caso de uso al servicio de Application.
 [ApiController]
-[Authorize]
+[Authorize(Roles = Roles.Todos)]
 [Route("api/clientes")]
 public class ClientesController : ControllerBase
 {
@@ -27,6 +28,7 @@ public class ClientesController : ControllerBase
     {
         try
         {
+            //en cliente se va a guardar el DTO creado en crearAsync y es lo que va a devolver el endPoint
             var cliente = await _clienteService.CrearAsync(request, cancellationToken);
             return CreatedAtAction(nameof(ObtenerPorId), new { id = cliente.Id }, cliente);
         }
@@ -37,6 +39,7 @@ public class ClientesController : ControllerBase
     }
 
     [HttpGet]
+    //IReadOnlyList es una interfaz que ya viene con .NET, para indicar que solo se puede leer lo que devuelva el endPoint
     public async Task<ActionResult<IReadOnlyList<ClienteResponse>>> ObtenerTodos(
         CancellationToken cancellationToken)
     {

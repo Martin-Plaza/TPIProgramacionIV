@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiControl.Application.Authorization;
 using ServiControl.Application.DTOs;
 using ServiControl.Application.Interfaces;
 using ServiControl.Domain.Enums;
@@ -10,7 +11,7 @@ namespace ServiControl.Presentation.Controllers;
 // Capa: Presentation
 // Responsabilidad: Mantiene endpoints REST sin reglas de negocio en el controller.
 [ApiController]
-[Authorize]
+[Authorize(Roles = Roles.Todos)]
 [Route("api/trabajos")]
 public class TrabajosController : ControllerBase
 {
@@ -69,6 +70,8 @@ public class TrabajosController : ControllerBase
         return Ok(trabajos);
     }
 
+    // Cambiar estados queda reservado a quienes gestionan el ciclo completo del trabajo.
+    [Authorize(Roles = Roles.AdminTecnico)]
     [HttpPut("{id:int}/estado")]
     public async Task<ActionResult<TrabajoResponse>> CambiarEstado(
         int id,
@@ -78,6 +81,7 @@ public class TrabajosController : ControllerBase
         return await CambiarEstadoInterno(id, request, cancellationToken);
     }
 
+    [Authorize(Roles = Roles.AdminTecnico)]
     [HttpPut("{id:int}/finalizar")]
     public async Task<ActionResult<TrabajoResponse>> Finalizar(
         int id,
@@ -89,6 +93,7 @@ public class TrabajosController : ControllerBase
             cancellationToken);
     }
 
+    [Authorize(Roles = Roles.AdminTecnico)]
     [HttpPut("{id:int}/cancelar")]
     public async Task<ActionResult<TrabajoResponse>> Cancelar(
         int id,

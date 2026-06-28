@@ -4,10 +4,9 @@ namespace ServiControl.Application.DTOs;
 
 public record CreateTrabajoRequest(
     int ClienteId,
-    int UsuarioId,
     CategoriaServicio CategoriaServicio,
     string Descripcion,
-    DateTime Fecha,
+    DateOnly Fecha,
     string Direccion,
     string? Observaciones);
 
@@ -20,7 +19,7 @@ public record TrabajoResponse(
     int UsuarioId,
     CategoriaServicio CategoriaServicio,
     string Descripcion,
-    DateTime Fecha,
+    DateOnly Fecha,
     string Direccion,
     string? Observaciones,
     EstadoTrabajo Estado);

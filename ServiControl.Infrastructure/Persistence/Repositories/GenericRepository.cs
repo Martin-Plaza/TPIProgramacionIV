@@ -20,6 +20,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         DbSet = context.Set<TEntity>();
     }
 
+    //los metodos siguientes FindAsync, AddAsync, etc, ya vienen por defecto en EF.
+
     public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await DbSet.FindAsync([id], cancellationToken);
