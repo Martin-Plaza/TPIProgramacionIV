@@ -165,9 +165,8 @@ if (args.Contains("create-admin", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
-    // Swagger queda activo solo en Development para documentar y probar la API durante desarrollo.
     app.UseSwagger();
     app.UseSwaggerUI();
 }
