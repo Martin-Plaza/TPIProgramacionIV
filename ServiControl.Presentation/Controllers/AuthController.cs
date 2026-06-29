@@ -59,8 +59,11 @@ public class AuthController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            //sin autorizacion el usuario
             return Unauthorized(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.ToString());
         }
     }
 }
